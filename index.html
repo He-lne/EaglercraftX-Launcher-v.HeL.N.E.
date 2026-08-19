@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>EaglercraftX Launcher | 多语言版</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="shortcut icon" href="/favicon.png">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', 'Minecraft', system-ui, sans-serif;
+      background: linear-gradient(145deg, #0a2f1f 0%, #0a1f12 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      background: rgba(30, 30, 30, 0.65);
+      backdrop-filter: blur(12px);
+      border-radius: 3rem;
+      padding: 2rem;
+      box-shadow: 0 25px 45px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .lang-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .lang-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .lang-bar-right {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .lang-btn, .github-btn {
+      background: rgba(0,0,0,0.5);
+      border: none;
+      color: #e0e0e0;
+      font-weight: bold;
+      padding: 0.5rem 1.2rem;
+      border-radius: 2rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.9rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .github-btn:hover {
+      background: rgba(240,165,0,0.7);
+      color: #111;
+    }
+    .lang-btn.active {
+      background: #f0a500;
+      color: #1e2a1f;
+      box-shadow: 0 0 10px rgba(240,165,0,0.4);
+    }
+    .lang-btn:hover:not(.active) {
+      background: rgba(240,165,0,0.7);
+      color: #111;
+    }
+    .hero { text-align: center; margin-bottom: 2rem; }
+    .hero h1 {
+      font-size: 3rem;
+      background: linear-gradient(135deg, #f9e45b, #ffb347);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero p { color: #cfd9cf; margin-top: 0.5rem; font-size: 1.2rem; }
+    .versions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.8rem;
+      margin: 2.5rem 0 2rem;
+    }
+    .card {
+      background: rgba(20, 20, 20, 0.75);
+      backdrop-filter: blur(8px);
+      border-radius: 2rem;
+      padding: 1.5rem;
+      text-align: center;
+      transition: transform 0.2s;
+      border: 1px solid rgba(255,215,130,0.3);
+    }
+    .card:hover { transform: translateY(-6px); border-color: #f0a500; }
+    .card h2 { font-size: 2rem; color: #ffdd88; margin-bottom: 0.25rem; }
+    .version-badge {
+      font-size: 0.8rem;
+      background: #2c2c2c;
+      display: inline-block;
+      padding: 0.2rem 0.8rem;
+      border-radius: 30px;
+      color: #bcbcbc;
+      margin-bottom: 1rem;
+    }
+    .card-desc { color: #cddcec; margin: 1rem 0; min-height: 70px; }
+    .play-btn {
+      background: #2b7a3e;
+      border: none;
+      padding: 0.8rem 1.8rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border-radius: 40px;
+      color: white;
+      cursor: pointer;
+      width: 80%;
+      transition: 0.1s linear;
+      box-shadow: 0 5px 0 #154f23;
+    }
+    .play-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #154f23; }
+    .play-btn:hover { background: #3d9c55; }
+    .footer-info { text-align: center; margin-top: 2rem; font-size: 0.8rem; color: #9abf9a; border-top: 1px dashed #4a6b3c; padding-top: 1.2rem; }
+    .toast-msg {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e2b1c;
+      color: #ffecb3;
+      padding: 0.8rem 1.8rem;
+      border-radius: 60px;
+      font-weight: bold;
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      border-left: 6px solid #ffb347;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    @media (max-width: 680px) {
+      .container { padding: 1rem; }
+      .hero h1 { font-size: 2rem; }
+      .lang-bar { flex-direction: column; align-items: stretch; }
+      .lang-bar-left, .lang-bar-right { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="lang-bar">
+    <div class="lang-bar-left">
+      <a href="https://github.com/He-lne/EaglercraftX-Launcher-v.HeL.N.E." target="_blank" rel="noopener noreferrer" class="github-btn">
+        <span>🐙</span> GitHub
+      </a>
+    </div>
+    <div class="lang-bar-right">
+      <button class="lang-btn" data-lang="en">🇬🇧 English</button>
+      <button class="lang-btn" data-lang="zh">🇨🇳 中文</button>
+      <button class="lang-btn" data-lang="it">🇮🇹 Italiano</button>
+    </div>
+  </div>
+
+  <div class="hero">
+    <h1 id="mainTitle">EaglercraftX · 启动器</h1>
+    <p id="subText">选择版本，即刻开始游戏</p>
+  </div>
+  <div class="versions-grid" id="cardsContainer"></div>
+  <div class="footer-info" id="footerText">📁 部分版本文件托管于外部 CDN | 无需额外下载</div>
+</div>
+<div id="toastMsg" class="toast-msg" style="opacity:0;"> </div>
+
+<script>
+  // ---------- 多语言字典（已添加苹果设备不兼容提示） ----------
+  const translations = {
+    en: {
+      title: "⚡ EaglercraftX · Launcher",
+      subtitle: "Choose a version and play immediately",
+      footer: "🎮 Some version files hosted on external CDN | Works offline",
+      cards: {
+        v188: { name: "EaglercraftX 1.8.8", badge: "Most Stable", desc: "Balanced performance, multiplayer & singleplayer, resource packs." },
+        v188Wasm: { name: "Eaglercraft 1.8.8 WASM", badge: "Experimental", desc: "WebAssembly acceleration, smoother gameplay & faster loading. ⚠️ Not supported on Apple devices." },
+        v112: { name: "Eaglercraft 1.12", badge: "Standard", desc: "Classic 1.12 experience with all blocks, mobs, and mechanics." },
+        v112Wasm: { name: "Eaglercraft 1.12 WASM", badge: "Modern", desc: "Latest blocks & mobs, WASM enhanced performance. ⚠️ Not supported on Apple devices." }
+      },
+      launchBtn: "▶ Play Now",
+      loadingMsg: "Launching game, please wait...",
+      disclaimer: "⚠️ Not official Minecraft. For personal use only."
+    },
+    zh: {
+      title: "⚡ EaglercraftX · 启动器",
+      subtitle: "选择版本，即刻开始游戏",
+      footer: "🎮 部分版本文件托管于外部 CDN | 支持离线游玩",
+      cards: {
+        v188: { name: "EaglercraftX 1.8.8", badge: "最稳定版", desc: "性能均衡，支持联机/单机，材质包扩展。" },
+        v188Wasm: { name: "Eaglercraft 1.8.8 WASM", badge: "实验性", desc: "WebAssembly 加速，更流畅的游戏体验与加载速度。⚠️ 不支持苹果设备。" },
+        v112: { name: "Eaglercraft 1.12", badge: "标准版", desc: "经典的 1.12 体验，包含所有方块、生物和机制。" },
+        v112Wasm: { name: "Eaglercraft 1.12 WASM", badge: "现代版", desc: "最新生物/方块，WASM 性能增强。⚠️ 不支持苹果设备。" }
+      },
+      launchBtn: "▶ 开始游戏",
+      loadingMsg: "正在启动游戏，请稍候...",
+      disclaimer: "⚠️ 非官方 Minecraft 版本，仅供学习娱乐。"
+    },
+    it: {
+      title: "⚡ EaglercraftX · Launcher",
+      subtitle: "Scegli una versione e gioca subito",
+      footer: "🎮 Alcuni file delle versioni sono ospitati su CDN esterno | Gioca offline",
+      cards: {
+        v188: { name: "EaglercraftX 1.8.8", badge: "Più Stabile", desc: "Prestazioni equilibrate, multiplayer e singleplayer, pacchetti risorse." },
+        v188Wasm: { name: "Eaglercraft 1.8.8 WASM", badge: "Sperimentale", desc: "Accelerazione WebAssembly, esperienza di gioco più fluida. ⚠️ Non supportato su dispositivi Apple." },
+        v112: { name: "Eaglercraft 1.12", badge: "Standard", desc: "Esperienza classica 1.12 con tutti i blocchi, mob e meccaniche." },
+        v112Wasm: { name: "Eaglercraft 1.12 WASM", badge: "Moderno", desc: "Ultimi mob/blocchi, prestazioni potenziate con WASM. ⚠️ Non supportato su dispositivi Apple." }
+      },
+      launchBtn: "▶ Gioca Ora",
+      loadingMsg: "Avvio del gioco, attendere...",
+      disclaimer: "⚠️ Non è Minecraft ufficiale, solo uso personale."
+    }
+  };
+
+  let currentLang = "en";
+
+  function showMessage(msg, isError = false) {
+    const toast = document.getElementById("toastMsg");
+    toast.style.backgroundColor = isError ? "#661111" : "#1e2b1c";
+    toast.style.borderLeftColor = isError ? "#ff7777" : "#ffb347";
+    toast.textContent = msg;
+    toast.style.opacity = "1";
+    setTimeout(() => toast.style.opacity = "0", 2500);
+  }
+
+  // =============== 版本文件映射 ===============
+  const localVersions = {
+    "1.8.8": "eagler-1.8.8.html",
+    "1.8.8-wasm": "eagler-1.8.8-wasm.html",
+    "1.12": "https://helne-emc112.netlify.app/",
+    "1.12-wasm": "eagler-1.12-wasm.html"
+  };
+  // ===========================================
+
+  function launchGame(versionId) {
+    const target = localVersions[versionId];
+    if (!target) {
+      showMessage("版本文件未找到: " + versionId, true);
+      return;
+    }
+    showMessage(translations[currentLang].loadingMsg);
+    const newWindow = window.open(target, "_blank");
+    if (!newWindow) {
+      showMessage("弹窗被浏览器拦截，请允许弹出窗口后重试。", true);
+    }
+  }
+
+  function renderUI() {
+    const t = translations[currentLang];
+    document.getElementById("mainTitle").innerText = t.title;
+    document.getElementById("subText").innerText = t.subtitle;
+    document.getElementById("footerText").innerHTML = `${t.footer}<span style="display:block; margin-top:5px;">${t.disclaimer}</span>`;
+
+    const versionsMeta = [
+      { id: "1.8.8", key: "v188" },
+      { id: "1.8.8-wasm", key: "v188Wasm" },
+      { id: "1.12", key: "v112" },
+      { id: "1.12-wasm", key: "v112Wasm" }
+    ];
+    const container = document.getElementById("cardsContainer");
+    container.innerHTML = "";
+    for (const meta of versionsMeta) {
+      const cardData = t.cards[meta.key];
+      if (!cardData) continue;
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <h2>${cardData.name}</h2>
+        <div class="version-badge">${cardData.badge}</div>
+        <div class="card-desc">${cardData.desc}</div>
+        <button class="play-btn" data-version="${meta.id}">${t.launchBtn}</button>
+      `;
+      const btn = card.querySelector(".play-btn");
+      btn.addEventListener("click", () => launchGame(meta.id));
+      container.appendChild(card);
+    }
+  }
+
+  function setLanguage(lang) {
+    if (!translations[lang]) lang = "en";
+    currentLang = lang;
+    localStorage.setItem("eaglercraft_lang", lang);
+    renderUI();
+    document.querySelectorAll(".lang-btn").forEach(btn => {
+      btn.classList.toggle("active", btn.getAttribute("data-lang") === lang);
+    });
+  }
+
+  function init() {
+    const saved = localStorage.getItem("eaglercraft_lang");
+    const browserLang = navigator.language?.startsWith("zh") ? "zh" : (navigator.language?.startsWith("it") ? "it" : "en");
+    const startLang = saved && translations[saved] ? saved : browserLang;
+    setLanguage(startLang);
+    document.querySelectorAll(".lang-btn").forEach(btn => {
+      btn.addEventListener("click", () => setLanguage(btn.getAttribute("data-lang")));
+    });
+  }
+  init();
+</script>
+</body>
+</html>
